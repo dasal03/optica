@@ -1,0 +1,37 @@
+
+service: optica
+frameworkVersion: "3"
+
+package:
+  patterns:
+    - "!./**"
+    - "Handlers/**"
+    - "Classes/**"
+    - "Utils/**"
+    - "DataBase/**"
+
+plugins:
+  - serverless-offline
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: python3.9
+
+functions:
+  user:
+    handler: Handlers/UserHandler.user
+    events:
+      - http:
+          path: /get_user
+          method: get
+      - http:
+          path: /create_user
+          method: post
+      - http:
+          path: /update_user
+          method: put
+      - http:
+          path: /delete_user
+          method: delete

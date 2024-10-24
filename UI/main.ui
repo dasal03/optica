@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>main</class>
+    <widget class="QMainWindow" name="main">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>800</width>
+                <height>600</height>
+            </rect>
+        </property>
+        <property name="font">
+            <font>
+                <family>Arial</family>
+                <pointsize>10</pointsize>
+            </font>
+        </property>
+        <property name="windowTitle">
+            <string>optica</string>
+        </property>
+        <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <widget class="QWidget" name="centralwidget">
+            <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                    <widget class="QLabel" name="lblTitle">
+                        <property name="font">
+                            <font>
+                                <family>Arial</family>
+                                <pointsize>16</pointsize>
+                                <weight>75</weight>
+                                <bold>true</bold>
+                            </font>
+                        </property>
+                        <property name="styleSheet">
+                            <string notr="true">color: rgb(0, 0, 0);</string>
+                        </property>
+                        <property name="text">
+                            <string>Bienvenido a la Óptica</string>
+                        </property>
+                        <property name="alignment">
+                            <set>Qt::AlignCenter</set>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QPushButton" name="btnOpenHistory">
+                        <property name="styleSheet">
+                            <string notr="true">color: rgb(0, 0, 0);
+                                background-color: rgb(227, 227, 227);</string>
+                        </property>
+                        <property name="text">
+                            <string>Abrir Historia Clínica</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QTableWidget" name="tableData">
+                        <property name="styleSheet">
+                            <string notr="true">color: rgb(0, 0, 0);
+                                background-color: rgb(227, 227, 227);</string>
+                        </property>
+                        <property name="rowCount">
+                            <number>0</number>
+                        </property>
+                        <property name="columnCount">
+                            <number>3</number>
+                        </property>
+                        <property name="horizontalHeaderLabels" stdset="0">
+                            <stringlist>
+                                <string>Columna 1</string>
+                                <string>Columna 2</string>
+                                <string>Columna 3</string>
+                            </stringlist>
+                        </property>
+                        <column />
+                        <column />
+                        <column />
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QMenuBar" name="menubar">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>800</width>
+                    <height>26</height>
+                </rect>
+            </property>
+            <property name="styleSheet">
+                <string notr="true">color: rgb(0, 0, 0);</string>
+            </property>
+            <widget class="QMenu" name="menuArchivo">
+                <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                    <string notr="true">color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="title">
+                    <string>Archivo</string>
+                </property>
+                <addaction name="btnHistoriaClinica" />
+                <addaction name="btnFacturaciones" />
+            </widget>
+            <widget class="QMenu" name="menuCreditos">
+                <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                    <string notr="true">color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="title">
+                    <string>Créditos</string>
+                </property>
+                <addaction name="btnDesarrolladores" />
+            </widget>
+            <addaction name="menuArchivo" />
+            <addaction name="menuCreditos" />
+        </widget>
+        <widget class="QStatusBar" name="statusbar" />
+        <action name="btnDesarrolladores">
+            <property name="text">
+                <string>Desarrolladores</string>
+            </property>
+            <property name="font">
+                <font>
+                    <family>Arial</family>
+                    <pointsize>10</pointsize>
+                </font>
+            </property>
+        </action>
+        <action name="btnHistoriaClinica">
+            <property name="text">
+                <string>Historia clínica</string>
+            </property>
+            <property name="font">
+                <font>
+                    <family>Arial</family>
+                    <pointsize>10</pointsize>
+                </font>
+            </property>
+        </action>
+        <action name="btnFacturaciones">
+            <property name="text">
+                <string>Facturaciones</string>
+            </property>
+            <property name="font">
+                <font>
+                    <family>Arial</family>
+                    <pointsize>10</pointsize>
+                </font>
+            </property>
+        </action>
+    </widget>
+    <resources />
+    <connections />
+</ui>
