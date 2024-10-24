@@ -1,4 +1,4 @@
-import os
+from os import environ
 from dotenv import load_dotenv
 import pymysql
 from sqlalchemy.dialects import mysql
@@ -11,12 +11,12 @@ pymysql.install_as_MySQLdb()
 load_dotenv()
 
 # Enviroment variables
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", 3306)
-DB_USER = os.getenv("DB_USER", "root")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-DB_NAME = os.getenv("DB_NAME")
-DB_ENGINE = os.getenv("DB_ENGINE", "mysql")
+DB_HOST = environ.get("DB_HOST", "localhost")
+DB_PORT = environ.get("DB_PORT", 3306)
+DB_USER = environ.get("DB_USER", "root")
+DB_PASSWORD = environ.get("DB_PASSWORD", "")
+DB_NAME = environ.get("DB_NAME")
+DB_ENGINE = environ.get("DB_ENGINE", "mysql")
 
 
 class DataBase:
@@ -58,7 +58,8 @@ class DataBase:
             )
 
         except pymysql.Error as e:
-            print("Error: connect pymysql %d: %s" % (e.args[0], e.args[1]))
+            print("Error: connect pymysql %d: %s" %
+                  (e.args[0], e.args[1]))
             raise SQLAlchemyError(e)
 
         return connect
@@ -70,7 +71,8 @@ class DataBase:
         """Staticmethod Compile statemens sqlalchemy to queries for pymysql."""
         if statement is not str:
             compiled = statement.compile(
-                dialect=mysql.dialect(), compile_kwargs={"render_postcompile": True}
+                dialect=mysql.dialect(),
+                compile_kwargs={"render_postcompile": True}
             )
             data = tuple(compiled.params.values())
             return str(compiled), data
@@ -85,7 +87,8 @@ class DataBase:
                 try:
                     cursor.execute(sql)
                 except pymysql.Error as e:
-                    print("Error: execute pymysql %d: %s" % (e.args[0], e.args[1]))
+                    print("Error: execute pymysql %d: %s" %
+                          (e.args[0], e.args[1]))
                     raise SQLAlchemyError(e)
 
     def query(self, stmt: str, **kwargs: dict) -> Layer:
@@ -115,7 +118,8 @@ class DataBase:
                     else:
                         resp = cursor.fetchall()
                 except pymysql.Error as e:
-                    print("Error: query pymysql %d: %s" % (e.args[0], e.args[1]))
+                    print("Error: query pymysql %d: %s" %
+                          (e.args[0], e.args[1]))
                     raise SQLAlchemyError(e)
         # print(f'!query output: {resp}')
         return resp
@@ -133,7 +137,8 @@ class DataBase:
                     result_id = cursor.rowcount if many else cursor.lastrowid
                     self._conn.commit()
                 except pymysql.Error as e:
-                    print("Error: insert pymysql %d: %s" % (e.args[0], e.args[1]))
+                    print("Error: insert pymysql %d: %s" %
+                          (e.args[0], e.args[1]))
                     raise SQLAlchemyError(e)
         return result_id
 
@@ -150,7 +155,8 @@ class DataBase:
                     self._conn.commit()
                     row_count = cursor.rowcount
                 except pymysql.Error as e:
-                    print("Error: update pymysql %d: %s" % (e.args[0], e.args[1]))
+                    print("Error: update pymysql %d: %s" %
+                          (e.args[0], e.args[1]))
                     raise SQLAlchemyError(e)
         return row_count
 
@@ -167,7 +173,8 @@ class DataBase:
                     self._conn.commit()
                     row_count = cursor.rowcount
                 except pymysql.Error as e:
-                    print("Error: delete pymysql %d: %s" % (e.args[0], e.args[1]))
+                    print("Error: delete pymysql %d: %s" %
+                          (e.args[0], e.args[1]))
                     raise SQLAlchemyError(e)
         return row_count
 
