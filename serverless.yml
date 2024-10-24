@@ -35,3 +35,19 @@ functions:
       - http:
           path: /delete_user
           method: delete
+
+  history:
+    handler: Handlers/HistoryHandler.history
+    events:
+      - http:
+          path: /get_history
+          method: get
+      - http:
+          path: /create_history
+          method: post
+      - http:
+          path: /update_history
+          method: put
+      - http:
+          path: /delete_history
+          method: delete
