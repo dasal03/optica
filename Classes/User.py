@@ -18,19 +18,18 @@ class User:
     def get_user_data(self, event):
         """Get user data from database."""
         request = get_input_data(event)
-        user_id = request.get("user_id", 0)
-
         conditions = {"active": 1}
 
-        if user_id:
-            conditions.append(UserModel.user_id == user_id)
+        if request:
+            for key, value in request.items():
+                conditions[key] = value
 
         stmt = (
             select(
                 UserModel.user_id,
-                concat(UserModel.first_name, " ", UserModel.last_name).label(
-                    "full_name"
-                ),
+                concat(
+                    UserModel.first_name, " ", UserModel.last_name
+                ).label("full_name"),
                 UserModel.username,
                 UserModel.email,
                 UserModel.profile_picture,
@@ -46,9 +45,8 @@ class User:
                 and_(
                     UserModel.document_type_id ==
                     DocumentTypeModel.document_type_id,
-                    DocumentTypeModel.active == 1,
-                ),
-                isouter=True,
+                    DocumentTypeModel.active == 1
+                ), isouter=True
             )
         )
 

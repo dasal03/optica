@@ -11,7 +11,7 @@ def history(event, context, conn):
         "GET": history_class.search_history,
         "POST": history_class.create_history,
         "PUT": history_class.update_history,
-        "DELETE": history_class.delete_history,
+        "DELETE": history_class.delete_history
     }
 
     # Select the method to be executed based on the user's petition.

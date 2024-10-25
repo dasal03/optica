@@ -51,3 +51,19 @@ functions:
       - http:
           path: /delete_history
           method: delete
+
+  document_type:
+    handler: Handlers/DocumentTypeHandler.document_type
+    events:
+      - http:
+          path: /get_document_types
+          method: get
+      - http:
+          path: /create_document_type
+          method: post
+      - http:
+          path: /update_document_type
+          method: put
+      - http:
+          path: /delete_document_type
+          method: delete
