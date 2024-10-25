@@ -67,3 +67,10 @@ functions:
       - http:
           path: /delete_document_type
           method: delete
+
+  auth:
+    handler: Handlers/AuthHandler.auth
+    events:
+      - http:
+          path: /auth
+          method: post
