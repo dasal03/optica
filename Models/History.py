@@ -10,6 +10,7 @@ class HistoryModel(Base):
     history_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, nullable=False)
     file_url = Column(String(255), nullable=False)
+    active = Column(Integer, server_default=str(1))
     created_at = Column(DateTime, default=current_timestamp())
     updated_at = Column(
         DateTime, default=current_timestamp(), onupdate=current_timestamp()

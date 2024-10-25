@@ -18,7 +18,7 @@ class UserModel(Base):
     birthdate = Column(Date, nullable=False)
     role_id = Column(Integer, nullable=False)
     profile_picture = Column(String(255), nullable=True)
-    active = Column(Integer, default=1)
+    active = Column(Integer, server_default=str(1))
     created_at = Column(DateTime, default=current_timestamp())
     updated_at = Column(
         DateTime, default=current_timestamp(), onupdate=current_timestamp()
@@ -35,4 +35,3 @@ class UserModel(Base):
         self.birthdate = kwargs.get("birthdate")
         self.role_id = kwargs.get("role_id")
         self.profile_picture = kwargs.get("profile_picture")
-        self.active = kwargs.get("active")

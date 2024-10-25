@@ -35,14 +35,20 @@ class History:
         stmt = (
             select(
                 UserModel.user_id,
-                concat(UserModel.first_name, " ", UserModel.last_name).label(
-                    "full_name"
-                ),
+                concat(
+                    UserModel.first_name, " ", UserModel.last_name
+                ).label("full_name"),
                 HistoryModel.file_url,
                 HistoryModel.created_at,
                 HistoryModel.updated_at,
             )
-            .join(HistoryModel, HistoryModel.user_id == UserModel.user_id)
+            .join(
+                HistoryModel,
+                and_(
+                    HistoryModel.user_id == UserModel.user_id,
+                    HistoryModel.active == 1
+                )
+            )
             .join(
                 DocumentTypeModel,
                 and_(
@@ -52,8 +58,8 @@ class History:
                 ),
             )
             .where(
-                UserModel.document_number == document_number,
-                UserModel.document_type_id == document_type_id
+                UserModel.document_type_id == document_type_id,
+                UserModel.document_number == document_number
             )
         )
         results = self.db.query(stmt).as_dict()
