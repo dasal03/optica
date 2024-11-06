@@ -14,6 +14,5 @@ def document_type(event, context, conn):
         "DELETE": doc_type_class.delete_document_type,
     }
 
-    # Select the method to be executed based on the user's petition.
     method_to_be_executed = methods.get(event["httpMethod"])
     return method_to_be_executed(event)

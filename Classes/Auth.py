@@ -1,9 +1,9 @@
 import hashlib
 from sqlalchemy import select
-from Utils.GeneralTools import get_input_data
 from Utils.ExceptionsTools import CustomException
-from Utils.Validations import Validations
+from Utils.GeneralTools import get_input_data
 from Models.User import UserModel
+from Utils.Validations import Validations
 
 
 class Auth:
@@ -19,19 +19,18 @@ class Auth:
         username = request.get("username", "")
         password = request.get("password", "")
 
-        validation_errors = [
+        validated = self.validations.validate([
             self.validations.param("username", str, username),
-            self.validations.param("password", str, password)
-        ]
-
-        validated = self.validations.validate(validation_errors, cast=True)
+            self.validations.param("password", str, password),
+        ], cast=True)
 
         if not validated["isValid"]:
             raise CustomException(validated["data"])
 
         # SELECT: search if user exists
         response = self.db.query(
-            select(UserModel).where(UserModel.username == username)
+            select(UserModel.user_id, UserModel.password)
+            .where(UserModel.username == username)
         ).first().as_dict()
 
         status_code = 400

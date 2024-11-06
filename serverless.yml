@@ -20,7 +20,7 @@ provider:
   runtime: python3.9
 
 functions:
-  user:
+  UserApi:
     handler: Handlers/UserHandler.user
     events:
       - http:
@@ -36,23 +36,7 @@ functions:
           path: /delete_user
           method: delete
 
-  history:
-    handler: Handlers/HistoryHandler.history
-    events:
-      - http:
-          path: /get_history
-          method: get
-      - http:
-          path: /create_history
-          method: post
-      - http:
-          path: /update_history
-          method: put
-      - http:
-          path: /delete_history
-          method: delete
-
-  document_type:
+  DocumentTypeApi:
     handler: Handlers/DocumentTypeHandler.document_type
     events:
       - http:
@@ -68,7 +52,59 @@ functions:
           path: /delete_document_type
           method: delete
 
-  auth:
+  MedicalHistoryApi:
+    handler: Handlers/MedicalHistoryHandler.medical_history
+    events:
+      - http:
+          path: /get_history
+          method: get
+      - http:
+          path: /create_history
+          method: post
+
+  DoctorApi:
+    handler: Handlers/DoctorHandler.doctor
+    events:
+      - http:
+          path: /get_doctors
+          method: get
+      - http:
+          path: /create_doctor
+          method: post
+      - http:
+          path: /update_doctor
+          method: put
+      - http:
+          path: /delete_doctor
+          method: delete
+
+  PatientApi:
+    handler: Handlers/PatientHandler.patient
+    events:
+      - http:
+          path: /get_patients
+          method: get
+      - http:
+          path: /create_patient
+          method: post
+      - http:
+          path: /update_patient
+          method: put
+      - http:
+          path: /delete_patient
+          method: delete
+
+  # ConsultationApi:
+  #   handler: Handlers/ConsultationHandler.consultation
+  #   events:
+  #     - http:
+  #         path: /get_consultations
+  #         method: get
+  #     - http:
+  #         path: /create_consultation
+  #         method: post
+
+  AuthApi:
     handler: Handlers/AuthHandler.auth
     events:
       - http:

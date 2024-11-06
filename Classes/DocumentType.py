@@ -16,9 +16,9 @@ class DocumentType:
         """Get all active document types."""
         conditions = {"active": 1}
 
-        stmt = select(DocumentTypeModel).filter_by(**conditions)
-
-        results = self.db.query(stmt).as_dict()
+        results = self.db.query(
+            select(DocumentTypeModel).filter_by(**conditions)
+        ).as_dict()
 
         # Default value
         results.insert(
@@ -28,12 +28,8 @@ class DocumentType:
             }
         )
 
-        if results:
-            status_code = 200
-            data = results
-        else:
-            status_code = 404
-            data = []
+        status_code = 200 if results else 404
+        data = results if results else []
 
         return {"statusCode": status_code, "data": data}
 
@@ -41,11 +37,9 @@ class DocumentType:
         request = get_input_data(event)
         description = request.get("description", "")
 
-        validation_list = [
+        validated = self.validations.validate([
             self.validations.param("description", str, description)
-        ]
-
-        validated = self.validations.validate(validation_list, cast=True)
+        ], cast=True)
 
         if not validated["isValid"]:
             raise CustomException(validated["data"])
@@ -77,11 +71,9 @@ class DocumentType:
             as_dict=True
         )
 
-        validation_list = [
+        validated = self.validations.validate([
             self.validations.param("description", str, description)
-        ]
-
-        validated = self.validations.validate(validation_list, cast=True)
+        ], cast=True)
 
         if not validated["isValid"]:
             raise CustomException(validated["data"])

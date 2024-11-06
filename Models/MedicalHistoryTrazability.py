@@ -5,10 +5,11 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class HistoryModel(Base):
-    __tablename__ = "histories"
-    history_id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=False)
+class MedicalHistoryTrazabilityModel(Base):
+    __tablename__ = "medical_histories_trazability"
+    medical_history_trazability_id = Column(
+        Integer, primary_key=True, index=True)
+    medical_history_id = Column(Integer, nullable=False)
     file_url = Column(String(255), nullable=False)
     active = Column(Integer, server_default=str(1))
     created_at = Column(DateTime, default=current_timestamp())
@@ -17,5 +18,5 @@ class HistoryModel(Base):
     )
 
     def __init__(self, **kwargs):
-        self.user_id = kwargs.get("user_id")
+        self.medical_history_id = kwargs.get("medical_history_id")
         self.file_url = kwargs.get("file_url")

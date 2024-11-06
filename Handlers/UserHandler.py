@@ -14,6 +14,5 @@ def user(event, context, conn):
         "DELETE": user_class.delete_user
     }
 
-    # Select the method to be executed based on the user's petition.
     method_to_be_executed = methods.get(event["httpMethod"])
     return method_to_be_executed(event)
