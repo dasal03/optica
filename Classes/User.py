@@ -174,8 +174,7 @@ class User:
         return {"statusCode": status_code, "data": data}
 
     def delete_user(self, event):
-        request = get_input_data(event)
-        user_id = request.get("user_id", 0)
+        user_id = event.get("user_id", 0)
 
         self.validations.records(
             conn=self.db,

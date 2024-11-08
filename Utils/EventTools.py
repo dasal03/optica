@@ -1,63 +1,72 @@
+import os
+import jwt
 from Utils.Response import Response
 from Utils.ExceptionsTools import CustomException, get_and_print_error
 from sqlalchemy.exc import SQLAlchemyError, InvalidRequestError
 from DataBase.DataBase import DataBase
 
 
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+
+def validate_token(event):
+    """Valida el token y extrae el user_id."""
+    token = event.get("headers", {}).get("Authorization")
+    if not token:
+        raise CustomException("Authorization token is required.", 401)
+
+    try:
+        token = token.split(" ")[1]
+        decoded_token = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        return decoded_token["user_id"]
+    except IndexError:
+        raise CustomException("Invalid Authorization header format.", 401)
+    except jwt.ExpiredSignatureError:
+        raise CustomException("Authorization token is expired.", 401)
+    except jwt.InvalidTokenError:
+        raise CustomException("Authorization token is invalid.", 401)
+
+
+def handle_response(event, context, data):
+    """Formatea y retorna la respuesta."""
+    r = Response(event, data, context)
+    return r.getResponse()
+
+
 def authorized(func):
     """
-    Decorator used as a middleware for lambda authorization
-    :param func:
-    :return:
+    Decorador utilizado para la autorización mediante JWT.
     """
 
     def verify_authorization(event, context):
-
+        conn = None
         try:
-            conn = None
-            data = {}
-
             conn = DataBase()
 
-            event["user_id"] = 0
-            data = func(event, context, conn)
+            if func.__name__ == "auth":
+                data = func(event, context, conn)
+                data["auth"] = True
+                return handle_response(event, context, data)
 
+            event["user_id"] = validate_token(event)
+
+            data = func(event, context, conn)
             data["auth"] = True
-        # EXCEPTIONS MANAGE
-        # for customized exceptions with explicit message and overryding
-        # the status code.
+
         except CustomException as err:
             data = get_and_print_error(err, err.status_code, err.message)
-
-        # for asserts sentences not satisfied returning 412:
-        # Precondition Failed and if not specified message in sentence
-        # take generic400: "Missing or invalid params, check the
-        # documentation of the API."
         except AssertionError as err:
-            msg = str(err)
-            data = get_and_print_error(err, 400, msg)
-
-        # when error in key of dicts or try cast type or invalid in GET.
-        # SECURITY: overryde error message with generic400.
+            data = get_and_print_error(err, 400, str(err))
         except (
             KeyError, ValueError, InvalidRequestError, AttributeError
         ) as err:
-            msg = str(err)
-            data = get_and_print_error(err, 400, msg)
-
-        # when unappropied use of arg type
-        # WARNIGNG: this exceptions return status code 5xx
+            data = get_and_print_error(err, 400, str(err))
         except TypeError as err:
             data = get_and_print_error(err, 500, str(err))
-
-        # when raised db exceptions and general exception
-        # WARNIGNG: this exceptions return status code 5xx
         except (SQLAlchemyError, Exception) as err:
             data = get_and_print_error(err, 500, str(err))
 
-        # Formatting response
-        r = Response(event, data, context)
-        return r.getResponse()
+        return handle_response(event, context, data)
 
     return verify_authorization
 

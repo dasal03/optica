@@ -23,7 +23,7 @@ class MedicalHistory:
         self.validations = Validations(db)
         self.pdf_generator = PDFGenerator()
 
-    def get_template_data(self, operation_id):
+    def get_template(self, operation_id):
         """Retrieve template data from the database."""
         result = self.db.query(
             select(TemplateModel.content).where(
@@ -83,7 +83,7 @@ class MedicalHistory:
             )
 
             # Ensure the template data is loaded
-            template = self.get_template_data(MEDICAL_HISTORY)
+            template = self.get_template(MEDICAL_HISTORY)
 
             self.pdf_generator.generate_pdf(
                 template=template,
